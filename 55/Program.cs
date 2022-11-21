@@ -1,5 +1,6 @@
-﻿// Задача 53: Задайте двумерный массив. Напишите программу,
-// которая поменяет местами первую и последнюю строку массива.
+﻿// Задача 55: Задайте двумерный массив. Напишите программу,
+// которая заменяет строки и столбцы. В случае, если это невозможно,
+// программа должна вывести сообщение для пользователя
 
 Console.WriteLine("Введите количество строк");
 bool isParsedM = int.TryParse(Console.ReadLine(), out int m);
@@ -17,17 +18,31 @@ Print2DArray(array);
 
 Console.WriteLine();
 
-SwapFirstAndLastRow(array);
-Print2DArray(array);
-
-void SwapFirstAndLastRow(int[,] array)
+/*if (array.GetLength(0) != array.GetLength(1))
 {
+    Console.WriteLine("Ошибка! Операция невозможна!");
+    return;
+}
+else
+{
+    int[,] swapArray = SwapRowsAndColumns(array);
+    Print2DArray(swapArray);
+}*/
+int[,] swapArray = SwapRowsAndColumns(array);
+Print2DArray(swapArray);
+
+int[,] SwapRowsAndColumns(int[,] array)
+{
+    int[,] newArray = new int[array.GetLength(1), array.GetLength(0)];
+
     for (int i = 0; i < array.GetLength(1); i++)
     {
-        int temp = array[0, i];
-        array[0, i] = array[array.GetUpperBound(0), i];
-        array[array.GetUpperBound(0), i] = temp;
+        for (int j = 0; j < array.GetLength(0); j++)
+        {
+            newArray[i, j] = array[j, i];
+        }
     }
+    return newArray;
 }
 
 int[,] CreateRandom2DArray(int m, int n)
