@@ -16,38 +16,66 @@ if (!isParsedM || !isParsedN)
 int[,] array = CreateRandom2DArray(m, n);
 Print2DArray(array);
 
+Console.WriteLine();
+
+int[,] newArray = FrequencyDictionary(array);
+Print2DArray(newArray);
+
 int[,] FrequencyDictionary(int[,] array)
 {
     int[,] result = new int[2, array.Length];
     int index = 0;
-    
+
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
         {
-            if (Check(result, array[i, j]))
+            int findIndex = Check(result, array[i, j]);
+            if (findIndex != -1)
             {
-                result[1, index]++;
+                result[1, findIndex]++;
             }
             else
             {
                 result[0, index] = array[i, j];
                 result[1, index] = 1;
+                index++;
             }
         }
     }
+    return Trim(result);
 }
 
-bool Check(int[,] array, int number)
+int[,] Trim(int[,] array)
+{
+    int index = array.GetLength(1) - 1;
+    for (int i = 0; i < array.GetLength(1); i++)
+    {
+        if (array[1, i] == 0)
+        {
+            index = i;
+            break;
+        }
+    }
+    int[,] result = new int[2, index];
+    for (int i = 0; i < result.GetLength(1); i++)
+    {
+        result[0, i] = array[0, i];
+        result[1, i] = array[1, i];
+    }
+    return result;
+}
+
+int Check(int[,] array, int number)
 {
     for (int i = 0; i < array.GetLength(1); i++)
     {
         if (array[0, i] == number)
         {
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
 int[,] CreateRandom2DArray(int m, int n)
